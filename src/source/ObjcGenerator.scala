@@ -48,7 +48,7 @@ class ObjcGenerator(spec: Spec) extends Generator(spec) {
   }
 
   override def finish = {
-    writeObjcFile("WrapperHead.h", "", allHeaders.map(h=>"#include " + q(h)), w=>{})
+    writeObjcFile("WrapperHeader.hpp", "", allHeaders.map(h=>"#include " + q(h)), w=>{})
   }
 
   override def generateEnum(origin: String, ident: Ident, doc: Doc, e: Enum) {
