@@ -28,6 +28,8 @@ import scala.collection.parallel.immutable
 
 class ObjcGenerator(spec: Spec) extends Generator(spec) {
 
+  val allHeaders = mutable.TreeSet[String]()
+  
   val marshal = new ObjcMarshal(spec)
 
   class ObjcRefs() {
@@ -43,6 +45,10 @@ class ObjcGenerator(spec: Spec) extends Generator(spec) {
       case ImportRef(arg) => header.add("#import " + arg)
       case DeclRef(decl, _) => header.add(decl)
     }
+  }
+
+  override def finish = {
+    writeObjcFile("WrapperHead.h", "", allHeaders.map(h=>"#include " + q(h)), w=>{})
   }
 
   override def generateEnum(origin: String, ident: Ident, doc: Doc, e: Enum) {
@@ -61,6 +67,8 @@ class ObjcGenerator(spec: Spec) extends Generator(spec) {
         }
       }
     })
+
+    allHeaders += marshal.headerName(ident)
   }
 
   def bodyName(ident: String): String = idObjc.ty(ident) + "." + spec.objcppExt // Must be a Obj-C++ file in case the constants are not compile-time constant expressions
@@ -129,6 +137,8 @@ class ObjcGenerator(spec: Spec) extends Generator(spec) {
 
     val self = marshal.typename(ident, i)
 
+    allHeaders += marshal.headerName(ident)
+
     refs.header.add("#import <Foundation/Foundation.h>")
 
     def writeObjcFuncDecl(method: Interface.Method, w: IndentWriter) {
@@ -164,6 +174,7 @@ class ObjcGenerator(spec: Spec) extends Generator(spec) {
         generateObjcConstants(w, i.consts, self)
       })
     }
+
   }
 
   override def generateRecord(origin: String, ident: Ident, doc: Doc, params: Seq[TypeParam], r: Record) {
@@ -183,6 +194,8 @@ class ObjcGenerator(spec: Spec) extends Generator(spec) {
     if (r.ext.objc) {
       refs.header.add(s"@class $noBaseSelf;")
     }
+
+    allHeaders += marshal.headerName(ident)
 
     def checkMutable(tm: MExpr): Boolean = tm.base match {
       case MOptional => checkMutable(tm.args.head)
