@@ -57,6 +57,7 @@ fi
     --java-nonnull-annotation "javax.annotation.Nonnull" \
     --ident-java-field mFooBar \
     \
+    --cpp-json-header "<rapidjson/serialization_json.hpp>" \
     --cpp-out "$temp_out/cpp" \
     --cpp-namespace textsort \
     --ident-cpp-enum-type foo_bar \

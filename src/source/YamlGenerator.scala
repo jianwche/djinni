@@ -1,13 +1,13 @@
 package djinni
 
+import java.util.{Map => JMap}
+
 import djinni.ast._
-import djinni.ast.Record.DerivingType.DerivingType
 import djinni.generatorTools._
 import djinni.meta._
 import djinni.writer.IndentWriter
-import java.util.{Map => JMap}
+
 import scala.collection.JavaConversions._
-import scala.collection.mutable
 
 class YamlGenerator(spec: Spec) extends Generator(spec) {
 
@@ -100,6 +100,7 @@ class YamlGenerator(spec: Spec) extends Generator(spec) {
         r.derivingTypes.collect {
           case Record.DerivingType.Eq => "eq"
           case Record.DerivingType.Ord => "ord"
+          case Record.DerivingType.Js => "js"
         }.mkString(" deriving(", ", ", ")")
       }
     }

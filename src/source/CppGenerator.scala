@@ -140,6 +140,9 @@ class CppGenerator(spec: Spec) extends Generator(spec) {
     r.consts.foreach(c => refs.find(c.ty, false))
     refs.hpp.add("#include <utility>") // Add for std::move
 
+    if(r.derivingTypes.contains(DerivingType.Js))
+      refs.hpp.add(s"#include ${spec.cppJsonHeader}")
+
     val self = marshal.typename(ident, r)
     val (cppName, cppFinal) = if (r.ext.cpp) (ident.name + "_base", "") else (ident.name, " final")
     val actualSelf = marshal.typename(cppName, r)
@@ -178,6 +181,23 @@ class CppGenerator(spec: Spec) extends Generator(spec) {
           w.wl(s"friend bool operator>=(const $actualSelf& lhs, const $actualSelf& rhs);")
         }
 
+        if (r.derivingTypes.contains(DerivingType.Js)) {
+          w.wl
+          w.w("JSON_SERIALIZE(")
+          val skipFirst = SkipFirst()
+          for (f <- r.fields) {
+            skipFirst {
+              w.w(", ")
+            }
+            val field = idCpp.field(f.ident)
+            var name = field
+            if (f.ident.name.endsWith("_"))
+              name = field.substring(0, field.length - 1)
+            w.w("\"" + name + "\", " + field)
+          }
+          w.w(")")
+        }
+
         // Constructor.
         if(r.fields.nonEmpty) {
           w.wl
@@ -188,6 +208,8 @@ class CppGenerator(spec: Spec) extends Generator(spec) {
           r.fields.tail.map(f => ", " + init(f)).foreach(w.wl)
           w.wl("{}")
         }
+
+        w.wl(actualSelf + "() {};")
 
         if (r.ext.cpp) {
           w.wl

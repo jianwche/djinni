@@ -3,18 +3,21 @@
 
 #pragma once
 
+#include "../network/json/serialization_json.hpp"
 #include <string>
 #include <utility>
 #include <vector>
 
-namespace textsort {
+namespace dropbox {
 
 struct ItemList final {
     std::vector<std::string> items;
 
+    JSON_SERIALIZE("items", items)
     ItemList(std::vector<std::string> items_)
     : items(std::move(items_))
     {}
+    ItemList() {};
 };
 
-}  // namespace textsort
+}  // namespace dropbox

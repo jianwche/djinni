@@ -30,6 +30,7 @@ object Main {
     var cppFileIdentStyle: IdentConverter = IdentStyle.underLower
     var cppOptionalTemplate: String = "std::optional"
     var cppOptionalHeader: String = "<optional>"
+    var cppJsonHeader: String = "<serialization_json.hpp>"
     var cppEnumHashWorkaround : Boolean = true
     var cppNnHeader: Option[String] = None
     var cppNnType: Option[String] = None
@@ -120,6 +121,8 @@ object Main {
         .text("The template to use for optional values (default: \"std::optional\")")
       opt[String]("cpp-optional-header").valueName("<header>").foreach(x => cppOptionalHeader = x)
         .text("The header to use for optional values (default: \"<optional>\")")
+      opt[String]("cpp-json-header").valueName("<header>").foreach(x => cppJsonHeader = x)
+        .text("The header to use for json features (default: \"<serialization_json.hpp>\")")
       opt[Boolean]("cpp-enum-hash-workaround").valueName("<true/false>").foreach(x => cppEnumHashWorkaround = x)
         .text("Work around LWG-2148 by generating std::hash specializations for C++ enums (default: true)")
       opt[String]("cpp-nn-header").valueName("<header>").foreach(x => cppNnHeader = Some(x))
@@ -278,6 +281,7 @@ object Main {
       cppFileIdentStyle,
       cppOptionalTemplate,
       cppOptionalHeader,
+      cppJsonHeader,
       cppEnumHashWorkaround,
       cppNnHeader,
       cppNnType,

@@ -4,28 +4,25 @@
 package com.dropbox.textsort;
 
 import java.util.ArrayList;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
 
 public final class ItemList {
 
 
-    /*package*/ final ArrayList<String> mItems;
+    /*package*/ final ArrayList<String> items;
 
     public ItemList(
-            @Nonnull ArrayList<String> items) {
-        this.mItems = items;
+            ArrayList<String> items) {
+        this.items = items;
     }
 
-    @Nonnull
     public ArrayList<String> getItems() {
-        return mItems;
+        return items;
     }
 
     @Override
     public String toString() {
         return "ItemList{" +
-                "mItems=" + mItems +
+                "items=" + items +
         "}";
     }
 

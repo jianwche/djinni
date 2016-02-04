@@ -5,21 +5,21 @@
 
 #include <functional>
 
-namespace textsort {
+namespace dropbox {
 
-enum class sort_order : int {
+enum class SortOrder : int {
     ASCENDING,
     DESCENDING,
     RANDOM,
 };
 
-}  // namespace textsort
+}  // namespace dropbox
 
 namespace std {
 
 template <>
-struct hash<::textsort::sort_order> {
-    size_t operator()(::textsort::sort_order type) const {
+struct hash<::dropbox::SortOrder> {
+    size_t operator()(::dropbox::SortOrder type) const {
         return std::hash<int>()(static_cast<int>(type));
     }
 };
