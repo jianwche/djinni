@@ -12,10 +12,18 @@ namespace dropbox {
 
 struct ItemList final {
     std::vector<std::string> items;
+    std::string name;
 
-    JSON_SERIALIZE("items", items)
-    ItemList(std::vector<std::string> items_)
+    const static std::string ITEMS;
+    const static std::string NAME;
+
+
+    JSON_SERIALIZE("items", items, "name", name)
+
+    ItemList(std::vector<std::string> items_,
+             std::string name_)
     : items(std::move(items_))
+    , name(std::move(name_))
     {}
     ItemList() {};
 };

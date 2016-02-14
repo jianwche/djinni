@@ -10,19 +10,28 @@ public final class ItemList {
 
     /*package*/ final ArrayList<String> items;
 
+    /*package*/ final String name;
+
     public ItemList(
-            ArrayList<String> items) {
+            ArrayList<String> items,
+            String name) {
         this.items = items;
+        this.name = name;
     }
 
     public ArrayList<String> getItems() {
         return items;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "ItemList{" +
                 "items=" + items +
+                "," + "name=" + name +
         "}";
     }
 

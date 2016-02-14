@@ -181,6 +181,16 @@ class CppGenerator(spec: Spec) extends Generator(spec) {
           w.wl(s"friend bool operator>=(const $actualSelf& lhs, const $actualSelf& rhs);")
         }
 
+        if (r.derivingTypes.contains(DerivingType.Db)) {
+          w.wl
+          val skipFirst = SkipFirst()
+          for (f <- r.fields) {
+            val field = idCpp.field(f.ident)
+            w.wl(s"const static std::string " + field.toUpperCase + ";")
+          }
+          w.wl
+        }
+
         if (r.derivingTypes.contains(DerivingType.Js)) {
           w.wl
           w.w("JSON_SERIALIZE(")
@@ -195,7 +205,7 @@ class CppGenerator(spec: Spec) extends Generator(spec) {
               name = field.substring(0, field.length - 1)
             w.w("\"" + name + "\", " + field)
           }
-          w.w(")")
+          w.w(")\n")
         }
 
         // Constructor.
@@ -239,8 +249,8 @@ class CppGenerator(spec: Spec) extends Generator(spec) {
               writeAlignedCall(w, "return ", r.fields, " &&", "", f => s"lhs.${idCpp.field(f.ident)} == rhs.${idCpp.field(f.ident)}")
               w.wl(";")
             } else {
-             w.wl("return true;")
-           }
+              w.wl("return true;")
+            }
           }
           w.wl
           w.w(s"bool operator!=(const $actualSelf& lhs, const $actualSelf& rhs)").braced {
@@ -275,6 +285,17 @@ class CppGenerator(spec: Spec) extends Generator(spec) {
             w.wl("return !(lhs < rhs);")
           }
         }
+
+        if (r.derivingTypes.contains(DerivingType.Db)) {
+          w.wl
+          val skipFirst = SkipFirst()
+          for (f <- r.fields) {
+            val field = idCpp.field(f.ident)
+            w.wl(s" std::string const " + actualSelf + "::" + field.toUpperCase + " = \"" + field + "\";")
+          }
+          w.wl
+        }
+
       })
     }
 

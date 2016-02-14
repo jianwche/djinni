@@ -101,6 +101,7 @@ class YamlGenerator(spec: Spec) extends Generator(spec) {
           case Record.DerivingType.Eq => "eq"
           case Record.DerivingType.Ord => "ord"
           case Record.DerivingType.Js => "js"
+          case Record.DerivingType.Db => "db"
         }.mkString(" deriving(", ", ", ")")
       }
     }

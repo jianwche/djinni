@@ -1,6 +1,7 @@
 item_list = record {
     items: list<string>;
-} deriving (js)
+    name: string;
+} deriving (js, db)
 
 sort_order = enum {
     ascending;
