@@ -16,14 +16,14 @@
 
 package djinni
 
-import djinni.ast._
 import java.io._
+
+import djinni.ast._
 import djinni.generatorTools._
-import djinni.meta._
-import djinni.syntax.Error
 import djinni.writer.IndentWriter
-import scala.language.implicitConversions
+
 import scala.collection.mutable
+import scala.language.implicitConversions
 
 package object generatorTools {
 
@@ -44,6 +44,7 @@ package object generatorTools {
                    cppOptionalTemplate: String,
                    cppOptionalHeader: String,
                    cppJsonHeader: String,
+                   cppDbHeader: String,
                    cppEnumHashWorkaround: Boolean,
                    cppNnHeader: Option[String],
                    cppNnType: Option[String],

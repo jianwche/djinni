@@ -143,8 +143,13 @@ class CppGenerator(spec: Spec) extends Generator(spec) {
     if(r.derivingTypes.contains(DerivingType.Js))
       refs.hpp.add(s"#include ${spec.cppJsonHeader}")
 
+    if(r.derivingTypes.contains(DerivingType.Db))
+      refs.hpp.add(s"#include ${spec.cppDbHeader}")
+
     val self = marshal.typename(ident, r)
-    val (cppName, cppFinal) = if (r.ext.cpp) (ident.name + "_base", "") else (ident.name, " final")
+
+    val (cppName, cppFinal) =  if(r.derivingTypes.contains(DerivingType.Db)) (ident.name, ": public Model ") else if (r.ext.cpp) (ident.name + "_base", "") else (ident.name, " final")
+
     val actualSelf = marshal.typename(cppName, r)
 
     // Requiring the extended class
